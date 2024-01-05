@@ -25,6 +25,7 @@ import { CardModule } from 'primeng/card';
 import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-currency-exchanger',
@@ -45,8 +46,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 })
 export class CurrencyExchangerComponent implements OnInit {
   private currencyExchangerService = inject(CurrencyExchangerService);
-  // private fb = inject(FormBuilder);
   private fb = inject(FormBuilder);
+  private messageService = inject(MessageService);
 
   currencyExchangerForm = this.fb.group({
     amount: new FormControl('', [Validators.required]),
@@ -110,6 +111,20 @@ export class CurrencyExchangerComponent implements OnInit {
   }
 
   onTargetChange(event: DropdownChangeEvent) {}
+  onBaseChange(event: DropdownChangeEvent) {
+    console.log(
+      '🚀 ~ file: currency-exchanger.component.ts:115 ~ CurrencyExchangerComponent ~ onBaseChange ~ event:',
+      event
+    );
+    this.messageService.add({
+      severity: 'warning',
+      summary: 'Warning',
+      detail: 'Current api has only "EUR" as a base currency',
+    });
+    setTimeout(() => {
+      this.currencyExchangerForm.get('base')?.setValue('EUR');
+    }, 2000);
+  }
 
   disableOrEnableBaseAndTarget() {
     // Enable or Disable base & target after setting amount

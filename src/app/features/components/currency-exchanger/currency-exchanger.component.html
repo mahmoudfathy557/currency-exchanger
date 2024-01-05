@@ -45,6 +45,7 @@
                     [showClear]="true"
                     formControlName="base"
                     [options]="currenciesOptions()"
+                    (onChange)="onBaseChange($event)"
                     placeholder="Select a Base Currency"
                   ></p-dropdown>
                 </div>
