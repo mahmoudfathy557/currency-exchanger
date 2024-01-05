@@ -3,9 +3,9 @@ import { Injectable, inject, signal } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { Observable, tap } from 'rxjs';
 import { ICurrency, ISymbol } from '../models/cuurency-type';
-import { CrudService } from '../../core/services/crud.service';
 import { Params } from '@angular/router';
-import { environment } from '../../../environments/environment';
+import { CrudService } from '@app/core/services/crud.service';
+import { environment } from '@env/environment';
 
 @Injectable({
   providedIn: 'root',
