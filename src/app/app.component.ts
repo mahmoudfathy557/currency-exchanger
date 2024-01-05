@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './shared/components/header/header.component';
-import { CurrencyExchangerComponent } from './shared/components/currency-exchanger/currency-exchanger.component';
+import { CurrencyExchangerComponent } from './features/components/currency-exchanger/currency-exchanger.component';
 
 @Component({
   selector: 'app-root',

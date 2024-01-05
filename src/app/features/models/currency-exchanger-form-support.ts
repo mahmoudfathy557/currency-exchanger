@@ -1,5 +1,4 @@
-import { PageName } from '../enums/pages-names';
-import { FormElementType } from './form-element-type';
+import { FormElementType } from '../../shared/models/form-element-type';
 import { ICurrency } from './cuurency-type';
 
 function getCurrencies(from: ICurrency[]) {
