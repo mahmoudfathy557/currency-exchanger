@@ -28,6 +28,7 @@ export class CurrencyExchangerService extends CrudService<ICurrency, string> {
   currencyExchangerResponse = signal({} as ICurrency);
   currencySymbols = signal([] as string[]);
 
+  // Note : EUR is the only free available base in this api => i'll stick to it
   getLatest(params?: Params): Observable<ICurrency> {
     return this._http
       .get<ICurrency>(`${this.getUrlByType('latest')}`, { params })

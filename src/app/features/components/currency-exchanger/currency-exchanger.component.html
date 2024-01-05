@@ -1,105 +1,119 @@
-<div class="d-grid" [formGroup]="currencyExchangerForm">
-  <div class="row">
-    <!-- left side -->
-    <div class="col-4 d-flex flex-column justify-content-between">
-      <!-- Amount -->
-      <div class="row flex flex-wrap gap-3 p-fluid">
-        <div class="flex-auto">
-          <label class="block font-bold" for="amount">Amount</label>
+<form (submit)="onConvert()">
+  <div class="d-grid" [formGroup]="currencyExchangerForm">
+    <div class="row">
+      <!-- left side -->
+      <div class="col-4 d-flex flex-column justify-content-between">
+        <!-- Amount -->
+        <div class="row flex flex-wrap gap-3 p-fluid">
           <div class="flex-auto">
-            <input
-              type="number"
-              pInputText
-              formControlName="amount"
-              class="text-center text-white"
-            />
-          </div>
-        </div>
-      </div>
-
-      <!-- approxResult -->
-      <div class="row flex flex-wrap gap-3 p-fluid">
-        <div class="flex-auto">
-          <input
-            type="text"
-            pInputText
-            formControlName="approxResult"
-            class="text-center text-white"
-          />
-        </div>
-      </div>
-    </div>
-
-    <!-- right side -->
-    <div class="col-8 gap-3 d-flex flex-column justify-content-between">
-      <div class="row justify-content-between">
-        <!-- Base Currency -->
-        <div class="col-5 p-0">
-          <div class="row flex flex-wrap gap-3 p-fluid">
+            <label class="block font-bold" for="amount">Amount</label>
             <div class="flex-auto">
-              <label class="block font-bold" for="base">From</label>
-              <div class="flex-auto">
-                <p-dropdown
-                  [filter]="true"
-                  [showClear]="true"
-                  formControlName="base"
-                  [options]="currenciesOptions()"
-                  placeholder="Select a Base Currency"
-                ></p-dropdown>
-              </div>
+              <input
+                type="number"
+                pInputText
+                formControlName="amount"
+                class="text-center text-white ng-invalid ng-dirty"
+              />
             </div>
           </div>
         </div>
 
-        <!-- Switching Icon -->
-        <div class="col-2 d-flex justify-content-center align-items-end">
-          <i class="pi pi-arrow-right-arrow-left" style="font-size: 2.5rem"></i>
-        </div>
-
-        <!-- Target Currency -->
-        <div class="col-5 p-0">
-          <div class="row flex flex-wrap gap-3 p-fluid">
-            <div class="flex-auto">
-              <label class="block font-bold" for="target">To</label>
-              <div class="flex-auto">
-                <p-dropdown
-                  [filter]="true"
-                  [showClear]="true"
-                  formControlName="target"
-                  [options]="currenciesOptions()"
-                  placeholder="Select a Target Currency"
-                ></p-dropdown>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Convert btn -->
-      <div class="row">
-        <button type="button" class="btn btn-primary">Convert</button>
-      </div>
-
-      <div class="row justify-content-between">
-        <!-- Result -->
-        <div class="col-5">
-          <div class="row">
+        <!-- Formula -->
+        <div class="row flex flex-wrap gap-3 p-fluid">
+          <div class="flex-auto">
             <input
               type="text"
               pInputText
-              formControlName="result"
+              formControlName="formula"
               class="text-center text-white"
             />
           </div>
         </div>
+      </div>
 
-        <!-- More Details btn -->
-        <div class="col-5">
-          <div class="row">
-            <button type="button" class="btn btn-primary">More Details</button>
+      <!-- right side -->
+      <div class="col-8 gap-3 d-flex flex-column justify-content-between">
+        <div class="row justify-content-between">
+          <!-- Base Currency -->
+          <div class="col-5 p-0">
+            <div class="row flex flex-wrap gap-3 p-fluid">
+              <div class="flex-auto">
+                <label class="block font-bold" for="base">From</label>
+                <div class="flex-auto">
+                  <p-dropdown
+                    [filter]="true"
+                    [showClear]="true"
+                    formControlName="base"
+                    [options]="currenciesOptions()"
+                    placeholder="Select a Base Currency"
+                  ></p-dropdown>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Switching Icon -->
+          <div class="col-2 d-flex justify-content-center align-items-end">
+            <i
+              class="pi pi-arrow-right-arrow-left"
+              style="font-size: 2.5rem"
+            ></i>
+          </div>
+
+          <!-- Target Currency -->
+          <div class="col-5 p-0">
+            <div class="row flex flex-wrap gap-3 p-fluid">
+              <div class="flex-auto">
+                <label class="block font-bold" for="target">To</label>
+                <div class="flex-auto">
+                  <p-dropdown
+                    [filter]="true"
+                    [showClear]="true"
+                    formControlName="target"
+                    [options]="currenciesOptions()"
+                    placeholder="Select a Target Currency"
+                    (onChange)="onTargetChange($event)"
+                  ></p-dropdown>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Convert btn -->
+        <div class="row">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="currencyExchangerForm.invalid"
+          >
+            Convert
+          </button>
+        </div>
+
+        <div class="row justify-content-between">
+          <!-- Result -->
+          <div class="col-5">
+            <div class="row">
+              <input
+                type="text"
+                pInputText
+                formControlName="result"
+                class="text-center text-white"
+              />
+            </div>
+          </div>
+
+          <!-- More Details btn -->
+          <div class="col-5">
+            <div class="row">
+              <button type="button" class="btn btn-primary">
+                More Details
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</form>

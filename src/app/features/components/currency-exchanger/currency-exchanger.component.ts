@@ -13,6 +13,7 @@ import {
   FormControl,
   FormsModule,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { CurrencyExchangerService } from '../../services/currency-exchanger.service';
 import { ICurrency } from '../../models/cuurency-type';
@@ -21,7 +22,7 @@ import { Observable, tap } from 'rxjs';
 
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
-import { DropdownModule } from 'primeng/dropdown';
+import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 
@@ -47,26 +48,81 @@ export class CurrencyExchangerComponent implements OnInit {
   // private fb = inject(FormBuilder);
   private fb = inject(FormBuilder);
 
+  currencyExchangerForm = this.fb.group({
+    amount: new FormControl('', [Validators.required]),
+    base: new FormControl(
+      {
+        value: 'EUR',
+        disabled: true,
+      },
+      [Validators.required]
+    ),
+    target: new FormControl(
+      {
+        value: '',
+        disabled: true,
+      },
+      [Validators.required]
+    ),
+    result: new FormControl({
+      value: 'XX.XX USD',
+      disabled: true,
+    }),
+    formula: new FormControl({
+      value: '1.00 EUR = XX.XX USD',
+      disabled: true,
+    }),
+  });
+
   ngOnInit(): void {
-    this.currencyExchangerService.getLatest().subscribe();
     this.currencyExchangerService.getSymbols().subscribe();
+
+    this.disableOrEnableBaseAndTarget();
+    //
   }
 
   currenciesOptions = computed(() =>
     this.currencyExchangerService.currencySymbols()
   );
 
-  currencyExchangerForm = this.fb.group({
-    amount: new FormControl(''),
-    base: new FormControl(''),
-    target: new FormControl(''),
-    result: new FormControl({
-      value: 'XX.XX USD',
-      disabled: true,
-    }),
-    approxResult: new FormControl({
-      value: '1.00 EUR = XX.XX USD',
-      disabled: true,
-    }),
-  });
+  currencyExchangerResponse = computed(() =>
+    this.currencyExchangerService.currencyExchangerResponse()
+  );
+
+  onConvert() {
+    console.log(this.currencyExchangerForm.value);
+    const { base, target, amount } = this.currencyExchangerForm.value;
+    if (base && target) {
+      this.currencyExchangerService.getLatest({}).subscribe((res) => {
+        if (res.success) {
+          const result = Number(amount) * Number(res.rates[target]);
+
+          this.currencyExchangerForm.get('formula')?.setValue(`
+        1.00 ${base} = ${res.rates[target]} ${target}
+        `);
+
+          this.currencyExchangerForm.get('result')?.setValue(`
+        ${result} ${target}
+        `);
+        }
+      });
+    }
+  }
+
+  onTargetChange(event: DropdownChangeEvent) {}
+
+  disableOrEnableBaseAndTarget() {
+    // Enable or Disable base & target after setting amount
+    this.currencyExchangerForm.controls['amount'].valueChanges.subscribe(
+      (res) => {
+        if (res) {
+          this.currencyExchangerForm.controls['base'].enable();
+          this.currencyExchangerForm.controls['target'].enable();
+        } else {
+          this.currencyExchangerForm.controls['base'].disable();
+          this.currencyExchangerForm.controls['target'].disable();
+        }
+      }
+    );
+  }
 }
