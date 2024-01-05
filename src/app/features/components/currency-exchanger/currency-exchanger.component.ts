@@ -6,6 +6,7 @@ import {
   inject,
   signal,
   type OnInit,
+  computed,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -46,13 +47,26 @@ export class CurrencyExchangerComponent implements OnInit {
   // private fb = inject(FormBuilder);
   private fb = inject(FormBuilder);
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.currencyExchangerService.getLatest().subscribe();
+    this.currencyExchangerService.getSymbols().subscribe();
+  }
+
+  currenciesOptions = computed(() =>
+    this.currencyExchangerService.currencySymbols()
+  );
 
   currencyExchangerForm = this.fb.group({
-    amount: new FormControl('All'),
-    from: new FormControl('All'),
-    to: new FormControl('All'),
-    result: new FormControl(''),
-    approxResult: new FormControl(''),
+    amount: new FormControl(''),
+    base: new FormControl(''),
+    target: new FormControl(''),
+    result: new FormControl({
+      value: 'XX.XX USD',
+      disabled: true,
+    }),
+    approxResult: new FormControl({
+      value: '1.00 EUR = XX.XX USD',
+      disabled: true,
+    }),
   });
 }

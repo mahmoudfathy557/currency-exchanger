@@ -7,3 +7,11 @@ export interface ICurrency {
     [currencyCode: string]: number;
   };
 }
+
+export interface ISymbol {
+  success: boolean;
+
+  symbols: {
+    [currencyCode: string]: string;
+  };
+}
