@@ -79,7 +79,6 @@ export class CurrencyExchangerComponent implements OnInit {
     this.currencyExchangerService.getSymbols().subscribe();
 
     this.disableOrEnableBaseAndTarget();
-    //
   }
 
   currenciesOptions = computed(() =>
@@ -112,18 +111,16 @@ export class CurrencyExchangerComponent implements OnInit {
 
   onTargetChange(event: DropdownChangeEvent) {}
   onBaseChange(event: DropdownChangeEvent) {
-    console.log(
-      '🚀 ~ file: currency-exchanger.component.ts:115 ~ CurrencyExchangerComponent ~ onBaseChange ~ event:',
-      event
-    );
-    this.messageService.add({
-      severity: 'warning',
-      summary: 'Warning',
-      detail: 'Current api has only "EUR" as a base currency',
-    });
-    setTimeout(() => {
-      this.currencyExchangerForm.get('base')?.setValue('EUR');
-    }, 2000);
+    if (event.value) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Warning',
+        detail: 'Current api has only "EUR" as a base currency',
+      });
+      setTimeout(() => {
+        this.currencyExchangerForm.get('base')?.setValue('EUR');
+      }, 2000);
+    }
   }
 
   disableOrEnableBaseAndTarget() {
