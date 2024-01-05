@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Observable, tap } from 'rxjs';
 import { ICurrency, ISymbol } from '../models/cuurency-type';
 import { Params } from '@angular/router';
@@ -25,8 +25,35 @@ export class CurrencyExchangerService extends CrudService<ICurrency, string> {
 
   private fb = inject(FormBuilder);
 
+  currencyExchangerForm = this.fb.group({
+    amount: new FormControl('', [Validators.required]),
+    base: new FormControl(
+      {
+        value: 'EUR',
+        disabled: true,
+      },
+      [Validators.required]
+    ),
+    target: new FormControl(
+      {
+        value: '',
+        disabled: true,
+      },
+      [Validators.required]
+    ),
+    result: new FormControl({
+      value: 'XX.XX USD',
+      disabled: true,
+    }),
+    formula: new FormControl({
+      value: '1.00 EUR = XX.XX USD',
+      disabled: true,
+    }),
+  });
+
   currencyExchangerResponse = signal({} as ICurrency);
   currencySymbols = signal([] as string[]);
+  currencyRates = signal([] as [string, number][]);
 
   // Note : EUR is the only free available base in this api => i'll stick to it
   getLatest(params?: Params): Observable<ICurrency> {
@@ -37,6 +64,7 @@ export class CurrencyExchangerService extends CrudService<ICurrency, string> {
           console.log('res', res);
 
           this.currencyExchangerResponse.set(res);
+          this.currencyRates.set(Object.entries(res.rates));
         })
       );
   }

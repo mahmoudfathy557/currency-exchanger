@@ -49,31 +49,7 @@ export class CurrencyExchangerComponent implements OnInit {
   private fb = inject(FormBuilder);
   private messageService = inject(MessageService);
 
-  currencyExchangerForm = this.fb.group({
-    amount: new FormControl('', [Validators.required]),
-    base: new FormControl(
-      {
-        value: 'EUR',
-        disabled: true,
-      },
-      [Validators.required]
-    ),
-    target: new FormControl(
-      {
-        value: '',
-        disabled: true,
-      },
-      [Validators.required]
-    ),
-    result: new FormControl({
-      value: 'XX.XX USD',
-      disabled: true,
-    }),
-    formula: new FormControl({
-      value: '1.00 EUR = XX.XX USD',
-      disabled: true,
-    }),
-  });
+  currencyExchangerForm = this.currencyExchangerService.currencyExchangerForm;
 
   ngOnInit(): void {
     this.currencyExchangerService.getSymbols().subscribe();
@@ -93,7 +69,11 @@ export class CurrencyExchangerComponent implements OnInit {
     console.log(this.currencyExchangerForm.value);
     const { base, target, amount } = this.currencyExchangerForm.value;
     if (base && target) {
-      this.currencyExchangerService.getLatest({}).subscribe((res) => {
+      const params = {
+        // base,
+        symbols: 'AED,AFN,AMD,ANG,AOA,ARS,AUD,AWG,AZN',
+      };
+      this.currencyExchangerService.getLatest(params).subscribe((res) => {
         if (res.success) {
           const result = Number(amount) * Number(res.rates[target]);
 
