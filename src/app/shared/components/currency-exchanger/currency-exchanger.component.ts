@@ -62,6 +62,7 @@ export class CurrencyExchangerComponent implements OnInit {
     this.currencyExchangerService.getSymbols().subscribe();
 
     this.disableOrEnableBaseAndTarget();
+    console.log('currencyExchangerForm', this.currencyExchangerForm.value);
   }
 
   currenciesOptions = computed(() =>

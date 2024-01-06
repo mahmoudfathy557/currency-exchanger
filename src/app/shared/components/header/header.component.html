@@ -1,9 +1,13 @@
-<nav class="navbar bg-dark">
+<nav class="navbar">
   <div class="container-fluid">
-    <a class="navbar-brand">Navbar</a>
+    <a class="navbar-brand text-white">Navbar</a>
     <form class="d-flex gap-3" role="search">
-      <button class="btn btn-outline-info">Eur-USD Detail</button>
-      <button class="btn btn-outline-info">Eur-GBP Detail</button>
+      <button class="btn btn-outline-info" (click)="onEurUsd($event)">
+        EUR-USD Details
+      </button>
+      <button class="btn btn-outline-info" (click)="onEurGbp($event)">
+        EUR-GBP Details
+      </button>
     </form>
   </div>
 </nav>

@@ -4,6 +4,7 @@ import {
   Component,
   OnInit,
   computed,
+  effect,
   inject,
 } from '@angular/core';
 import { CurrencyExchangerComponent } from '../../../../shared/components/currency-exchanger/currency-exchanger.component';
@@ -40,8 +41,15 @@ export class LayoutComponent implements OnInit {
 
   title!: string;
 
-  ngOnInit(): void {
-    console.log(this.currencySymbolsWithName());
-    this.title = `${this.base} - ${this.currencySymbolsWithName()[this.base]}`;
+  constructor() {
+    effect(() => {
+      if (this.currencySymbolsWithName()) {
+        this.title = `${this.base} - ${
+          this.currencySymbolsWithName()[this.base]
+        }`;
+      }
+    });
   }
+
+  ngOnInit(): void {}
 }
