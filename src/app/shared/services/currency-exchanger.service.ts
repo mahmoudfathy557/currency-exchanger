@@ -64,7 +64,8 @@ export class CurrencyExchangerService extends CrudService<ICurrency, string> {
   currencySymbolsWithName = signal({} as { [currencyCode: string]: string });
   currencyRates = signal([] as [string, number][]);
 
-  // Note : EUR is the only free available base in this api => i'll stick to it
+  currencyHistoricalRates = signal([] as number[]);
+
   getLatest(param?: string): Observable<ICurrency1> {
     return this._http
       .get<ICurrency1>(`${this.getUrlByType1('latest')}/${param}`)
@@ -74,6 +75,28 @@ export class CurrencyExchangerService extends CrudService<ICurrency, string> {
 
           this.currencyExchangerResponse.set(res);
           this.currencyRates.set(Object.entries(res.conversion_rates));
+        })
+      );
+  }
+
+  getHistoricalData(date: string, symbols?: any): Observable<ICurrency> {
+    const params = {
+      symbols,
+    };
+    return this._http
+      .get<ICurrency>(
+        `${environment.APIUrl}/${date}?access_key=${environment.currencyApiAccessKey}`,
+        { params }
+      )
+      .pipe(
+        tap((res) => {
+          console.log('res', res);
+
+          res.success &&
+            this.currencyHistoricalRates.set([
+              ...this.currencyHistoricalRates(),
+              Object.values(res.rates)[0],
+            ]);
         })
       );
   }
