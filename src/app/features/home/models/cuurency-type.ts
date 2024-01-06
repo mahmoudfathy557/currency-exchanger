@@ -8,6 +8,12 @@ export interface ICurrency {
   };
 }
 
+export interface ICurrency1 {
+  result: string;
+  base_code: string;
+  conversion_rates: { [currencyCode: string]: number };
+}
+
 export interface ISymbol {
   success: boolean;
 

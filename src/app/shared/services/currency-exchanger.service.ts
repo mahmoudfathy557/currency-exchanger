@@ -2,7 +2,11 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Observable, tap } from 'rxjs';
-import { ICurrency, ISymbol } from '../../features/home/models/cuurency-type';
+import {
+  ICurrency,
+  ICurrency1,
+  ISymbol,
+} from '../../features/home/models/cuurency-type';
 import { Params } from '@angular/router';
 import { CrudService } from '@app/core/services/crud.service';
 import { environment } from '@env/environment';
@@ -19,6 +23,10 @@ export class CurrencyExchangerService extends CrudService<ICurrency, string> {
     return `${environment.APIUrl}${type}?access_key=${environment.currencyApiAccessKey}`;
   }
 
+  getUrlByType1(type: string) {
+    return `${environment.APIUrl1}/${environment.currencyApiAccessKey1}/${type}`;
+  }
+
   getResourceUrl(): string {
     return 'VacationRequests';
   }
@@ -29,7 +37,7 @@ export class CurrencyExchangerService extends CrudService<ICurrency, string> {
     amount: new FormControl('', [Validators.required]),
     base: new FormControl(
       {
-        value: 'EUR',
+        value: '',
         disabled: true,
       },
       [Validators.required]
@@ -51,21 +59,21 @@ export class CurrencyExchangerService extends CrudService<ICurrency, string> {
     }),
   });
 
-  currencyExchangerResponse = signal({} as ICurrency);
+  currencyExchangerResponse = signal({} as ICurrency1);
   currencySymbols = signal([] as string[]);
   currencySymbolsWithName = signal({} as { [currencyCode: string]: string });
   currencyRates = signal([] as [string, number][]);
 
   // Note : EUR is the only free available base in this api => i'll stick to it
-  getLatest(params?: Params): Observable<ICurrency> {
+  getLatest(param?: string): Observable<ICurrency1> {
     return this._http
-      .get<ICurrency>(`${this.getUrlByType('latest')}`, { params })
+      .get<ICurrency1>(`${this.getUrlByType1('latest')}/${param}`)
       .pipe(
         tap((res) => {
           console.log('res', res);
 
           this.currencyExchangerResponse.set(res);
-          this.currencyRates.set(Object.entries(res.rates));
+          this.currencyRates.set(Object.entries(res.conversion_rates));
         })
       );
   }

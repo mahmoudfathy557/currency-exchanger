@@ -99,59 +99,36 @@ export class CurrencyExchangerComponent implements OnInit {
       const tempTarget = this.target?.value as string;
       this.base?.setValue(this.target?.value as string);
       this.target?.setValue(tempBase);
-
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Warning',
-        detail: 'Current api has only "EUR" as a base currency',
-      });
-      setTimeout(() => {
-        this.base?.setValue('EUR');
-        this.target?.setValue(tempTarget);
-      }, 2000);
     }
   }
 
   onConvert() {
     if (this.base?.value && this.target?.value) {
-      const params = {
-        // base,
-        symbols: `${this.target.value},AED,AFN,AMD,ANG,AOA,ARS,AUD,AWG,AZN`,
-      };
-      this.currencyExchangerService.getLatest(params).subscribe((res) => {
-        // Setting values of 'formula' and 'result'
-        if (res.success) {
-          const result =
-            Number(this.amount?.value) *
-            Number(res.rates[this.target?.value as string]);
+      this.currencyExchangerService
+        .getLatest(this.base.value)
+        .subscribe((res) => {
+          // Setting values of 'formula' and 'result'
+          if (res.result === 'success') {
+            const result =
+              Number(this.amount?.value) *
+              Number(res.conversion_rates[this.target?.value as string]);
 
-          this.formula?.setValue(`
-        1.00 ${this.base?.value} = ${res.rates[
-            this.target?.value as string
-          ].toFixed(2)} ${this.target?.value}
+            this.formula?.setValue(`
+        1.00 ${this.base?.value} = ${res.conversion_rates[
+              this.target?.value as string
+            ].toFixed(2)} ${this.target?.value}
         `);
 
-          this.result?.setValue(`
+            this.result?.setValue(`
         ${result.toFixed(2)} ${this.target?.value}
         `);
-        }
-      });
+          }
+        });
     }
   }
 
   onTargetChange(event: DropdownChangeEvent) {}
-  onBaseChange(event: DropdownChangeEvent) {
-    if (event.value) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Warning',
-        detail: 'Current api has only "EUR" as a base currency',
-      });
-      setTimeout(() => {
-        this.currencyExchangerForm.get('base')?.setValue('EUR');
-      }, 2000);
-    }
-  }
+  onBaseChange(event: DropdownChangeEvent) {}
 
   disableOrEnableBaseAndTarget() {
     // Enable or Disable base & target after setting amount
