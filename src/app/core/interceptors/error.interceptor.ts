@@ -31,20 +31,26 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
               alert(message);
               break;
             case 401: // Unauthorized
+              alert(' 401:  Unauthorized');
               // this.router.navigate(['/login']);
               break;
             case 403: // Forbidden
+              alert('403:  Forbidden');
               // this.router.navigate(['/forbidden']);
               break;
             case 404: // Not Found
+              alert('404: // Not Found');
               // this.router.navigate(['/not-found']);
               // alert(`Not Found: ${error.url}`);
               console.error(`Not Found: ${error.url}`);
               break;
             case 500: // Internal Server Error
+              alert('500:   Internal Server Error');
               // this.router.navigate(['/server-error']);
               break;
             default:
+              alert(error.message);
+
               // this.router.navigate(['/error']);
               break;
           }
