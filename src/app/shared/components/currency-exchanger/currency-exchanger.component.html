@@ -105,27 +105,35 @@
         >
           <!-- Result -->
 
-          <div class="col-12 col-md-5 flex flex-wrap p-fluid">
+          <div
+            class=""
+            [ngClass]="
+              isHomePage
+                ? 'col-12 col-md-5 flex flex-wrap p-fluid'
+                : 'col-12   flex flex-wrap p-fluid'
+            "
+          >
             <div class="flex-auto">
-              <label class="block font-bold" for="result">Result</label>
-              <div class="flex-auto">
-                <input
-                  type="text"
-                  pInputText
-                  formControlName="result"
-                  class="text-center text-white"
-                />
-              </div>
+              <input
+                type="text"
+                pInputText
+                formControlName="result"
+                class="text-center text-white"
+              />
             </div>
           </div>
 
           <!-- More Details btn -->
 
-          <div class="col-12 col-md-5 flex flex-wrap p-fluid">
+          <div
+            *ngIf="isHomePage"
+            class="flex flex-wrap p-fluid"
+            [ngClass]="isHomePage ? 'col-12 col-md-5' : 'col-12'"
+          >
             <div class="flex-auto row m-auto">
-              <button type="button" class="btn btn-primary">
+              <a class="btn btn-primary" routerLink="/currency-details">
                 More Details
-              </button>
+              </a>
             </div>
           </div>
         </div>

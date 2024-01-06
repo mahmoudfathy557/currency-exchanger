@@ -17,7 +17,7 @@ import {
 } from '@angular/forms';
 import { CurrencyExchangerService } from '../../services/currency-exchanger.service';
 import { ICurrency } from '../../../features/home/models/cuurency-type';
-import { Params } from '@angular/router';
+import { Params, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 
 import { ButtonModule } from 'primeng/button';
@@ -26,6 +26,7 @@ import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { MessageService } from 'primeng/api';
+import { PageName } from '@app/shared/enums/pages-names';
 
 @Component({
   selector: 'app-currency-exchanger',
@@ -39,6 +40,9 @@ import { MessageService } from 'primeng/api';
     InputTextModule,
     DropdownModule,
     InputNumberModule,
+    RouterLink,
+
+    RouterLinkActive,
   ],
   templateUrl: './currency-exchanger.component.html',
   styleUrl: './currency-exchanger.component.scss',
@@ -48,6 +52,9 @@ export class CurrencyExchangerComponent implements OnInit {
   private currencyExchangerService = inject(CurrencyExchangerService);
   private fb = inject(FormBuilder);
   private messageService = inject(MessageService);
+  private router = inject(Router);
+
+  isHomePage = this.router.url.includes(PageName.Home);
 
   currencyExchangerForm = this.currencyExchangerService.currencyExchangerForm;
 
@@ -91,7 +98,6 @@ export class CurrencyExchangerComponent implements OnInit {
       const tempTarget = this.target?.value as string;
       this.base?.setValue(this.target?.value as string);
       this.target?.setValue(tempBase);
-      console.log(this.currencyExchangerForm.value);
 
       this.messageService.add({
         severity: 'warn',

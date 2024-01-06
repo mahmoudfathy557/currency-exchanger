@@ -53,6 +53,7 @@ export class CurrencyExchangerService extends CrudService<ICurrency, string> {
 
   currencyExchangerResponse = signal({} as ICurrency);
   currencySymbols = signal([] as string[]);
+  currencySymbolsWithName = signal({} as { [currencyCode: string]: string });
   currencyRates = signal([] as [string, number][]);
 
   // Note : EUR is the only free available base in this api => i'll stick to it
@@ -77,6 +78,7 @@ export class CurrencyExchangerService extends CrudService<ICurrency, string> {
           console.log('res', res);
           const currencyList = Object.keys(res.symbols);
           this.currencySymbols.set(currencyList);
+          this.currencySymbolsWithName.set(res.symbols);
         })
       );
   }

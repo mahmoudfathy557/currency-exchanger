@@ -1,5 +1,18 @@
 <!-- main -->
-<h2 class="text-capitalize mt-3">currency exchanger</h2>
+<div class="d-flex justify-content-between align-items-center">
+  <div class="title">
+    <h2 class="text-capitalize mt-3">
+      {{ title }}
+    </h2>
+  </div>
+  <div>
+    <a class="btn btn-primary" routerLink="/home"> Back to Home </a>
+  </div>
+</div>
 <div class="white-box">
   <app-currency-exchanger></app-currency-exchanger>
+</div>
+
+<div class="white-box">
+  <app-rates-chart></app-rates-chart>
 </div>
