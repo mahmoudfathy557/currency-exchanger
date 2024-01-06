@@ -50,6 +50,6 @@ export class HeaderComponent {
     this.amount?.setValue('1');
     this.base?.setValue(base);
     this.target?.setValue(target);
-    this.router.navigate(['currency-details']);
+    this.router.navigate([`currency-details/${base}/${target}`]);
   }
 }

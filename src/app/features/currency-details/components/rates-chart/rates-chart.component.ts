@@ -7,7 +7,9 @@ import {
   inject,
   type OnInit,
 } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
 import { CurrencyExchangerService } from '@app/shared/services/currency-exchanger.service';
+import { MessageService } from 'primeng/api';
 import { ChartModule } from 'primeng/chart';
 @Component({
   selector: 'app-rates-chart',
@@ -19,8 +21,11 @@ import { ChartModule } from 'primeng/chart';
 })
 export class RatesChartComponent implements OnInit {
   private currencyExchangerService = inject(CurrencyExchangerService);
+  private activatedRoute = inject(ActivatedRoute);
+  private messageService = inject(MessageService);
 
   currencyExchangerForm = this.currencyExchangerService.currencyExchangerForm;
+  isShowChart = false;
 
   data = computed(() => {
     return {
@@ -66,10 +71,25 @@ export class RatesChartComponent implements OnInit {
   );
 
   ngOnInit() {
-    if (this.base?.value && this.target?.value) {
-      this.getMonthlyRatesOfPastYear();
-      this.setChartData();
-    }
+    this.activatedRoute.params.subscribe((params: Params) => {
+      const { base, target } = params;
+      if (base?.toLowerCase() !== 'eur') {
+        this.isShowChart = false;
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Warn',
+          detail:
+            'Historical Chart data is only available with "EUR" due to current subscription',
+          life: 10000,
+        });
+      } else {
+        if (base && target) {
+          this.isShowChart = true;
+          this.getMonthlyRatesOfPastYear();
+          this.setChartData();
+        }
+      }
+    });
   }
 
   getMonthlyRatesOfPastYear() {

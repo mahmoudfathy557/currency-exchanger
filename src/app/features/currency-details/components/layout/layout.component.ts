@@ -9,7 +9,12 @@ import {
 } from '@angular/core';
 import { CurrencyExchangerComponent } from '../../../../shared/components/currency-exchanger/currency-exchanger.component';
 import { RatesChartComponent } from '../rates-chart/rates-chart.component';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import {
+  ActivatedRoute,
+  Params,
+  RouterLink,
+  RouterLinkActive,
+} from '@angular/router';
 import { CurrencyExchangerService } from '@app/shared/services/currency-exchanger.service';
 
 @Component({
@@ -28,6 +33,7 @@ import { CurrencyExchangerService } from '@app/shared/services/currency-exchange
 })
 export class LayoutComponent implements OnInit {
   private currencyExchangerService = inject(CurrencyExchangerService);
+  private activatedRoute = inject(ActivatedRoute);
 
   currencySymbolsWithName = computed(() =>
     this.currencyExchangerService.currencySymbolsWithName()
@@ -36,20 +42,28 @@ export class LayoutComponent implements OnInit {
   currencyExchangerForm = this.currencyExchangerService.currencyExchangerForm;
 
   get base() {
-    return this.currencyExchangerForm?.get('base')?.value as string;
+    return this.currencyExchangerForm?.get('base');
   }
 
-  title!: string;
+  get target() {
+    return this.currencyExchangerForm?.get('target');
+  }
 
-  constructor() {
-    effect(() => {
-      if (this.currencySymbolsWithName()) {
-        this.title = `${this.base} - ${
-          this.currencySymbolsWithName()[this.base]
-        }`;
+  title = computed(() => {
+    return `${this.base?.value} - ${
+      this.currencySymbolsWithName()[this.base?.value as string]
+    }`;
+  });
+
+  constructor() {}
+
+  ngOnInit(): void {
+    this.activatedRoute.params.subscribe((params: Params) => {
+      const { base, target } = params;
+      if (base && target) {
+        this.base?.setValue(base);
+        this.target?.setValue(target);
       }
     });
   }
-
-  ngOnInit(): void {}
 }

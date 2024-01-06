@@ -17,7 +17,13 @@ import {
 } from '@angular/forms';
 import { CurrencyExchangerService } from '../../services/currency-exchanger.service';
 import { ICurrency } from '../../../features/home/models/cuurency-type';
-import { Params, Router, RouterLink, RouterLinkActive } from '@angular/router';
+import {
+  ActivatedRoute,
+  Params,
+  Router,
+  RouterLink,
+  RouterLinkActive,
+} from '@angular/router';
 import { Observable, tap } from 'rxjs';
 
 import { ButtonModule } from 'primeng/button';

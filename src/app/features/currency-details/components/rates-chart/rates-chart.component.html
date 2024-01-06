@@ -1,3 +1,11 @@
 <div class="card">
-  <p-chart type="line" [data]="data()" [options]="options"></p-chart>
+  <ng-container *ngIf="isShowChart; else elseTemplate">
+    <p-chart type="line" [data]="data()" [options]="options"></p-chart>
+  </ng-container>
+  <ng-template #elseTemplate>
+    <p class="text-center my-auto bg-dark text-white">
+      Historical Chart data is only available with "EUR" due to current
+      subscription
+    </p>
+  </ng-template>
 </div>

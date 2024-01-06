@@ -131,7 +131,13 @@
             [ngClass]="isHomePage ? 'col-12 col-md-5' : 'col-12'"
           >
             <div class="flex-auto row m-auto">
-              <a class="btn btn-primary" routerLink="/currency-details">
+              <a
+                class="btn btn-primary"
+                [routerLink]="
+                  '/currency-details/' + base?.value + '/' + target?.value
+                "
+                [class.disabled]="currencyExchangerForm.invalid"
+              >
                 More Details
               </a>
             </div>
