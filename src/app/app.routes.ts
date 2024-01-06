@@ -14,6 +14,15 @@ export const routes: Routes = [
   },
 
   {
+    path: 'currency-details',
+    loadChildren: () =>
+      import('@features/currency-details/currency-details.routes').then(
+        (d) => d.Currency_Details_ROUTES
+      ),
+    title: 'Currency Details',
+  },
+
+  {
     path: '**',
     redirectTo: 'home',
     pathMatch: 'full',

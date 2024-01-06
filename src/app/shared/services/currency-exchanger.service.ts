@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Observable, tap } from 'rxjs';
-import { ICurrency, ISymbol } from '../models/cuurency-type';
+import { ICurrency, ISymbol } from '../../features/home/models/cuurency-type';
 import { Params } from '@angular/router';
 import { CrudService } from '@app/core/services/crud.service';
 import { environment } from '@env/environment';

@@ -16,7 +16,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { CurrencyExchangerService } from '../../services/currency-exchanger.service';
-import { ICurrency } from '../../models/cuurency-type';
+import { ICurrency } from '../../../features/home/models/cuurency-type';
 import { Params } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 

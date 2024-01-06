@@ -7,7 +7,7 @@ import {
   signal,
   type OnInit,
 } from '@angular/core';
-import { CurrencyExchangerService } from '../../services/currency-exchanger.service';
+import { CurrencyExchangerService } from '../../../../shared/services/currency-exchanger.service';
 
 @Component({
   selector: 'app-other-currencies',
