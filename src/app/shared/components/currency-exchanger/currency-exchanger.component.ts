@@ -68,7 +68,6 @@ export class CurrencyExchangerComponent implements OnInit {
     this.currencyExchangerService.getSymbols().subscribe();
 
     this.disableOrEnableBaseAndTarget();
-    console.log('currencyExchangerForm', this.currencyExchangerForm.value);
   }
 
   currenciesOptions = computed(() =>
@@ -99,6 +98,7 @@ export class CurrencyExchangerComponent implements OnInit {
     return this.currencyExchangerForm?.get('result');
   }
 
+  // swapping base and target values when clicking on the swap btn
   onSwap() {
     if (this.base?.value && this.target?.value) {
       const tempBase = this.base?.value as string;
@@ -108,12 +108,12 @@ export class CurrencyExchangerComponent implements OnInit {
     }
   }
 
+  // Setting values of 'formula' and 'result' when clicling on "Convert"
   onConvert() {
     if (this.base?.value && this.target?.value) {
       this.currencyExchangerService
         .getLatest(this.base.value)
         .subscribe((res) => {
-          // Setting values of 'formula' and 'result'
           if (res.result === 'success') {
             const result =
               Number(this.amount?.value) *

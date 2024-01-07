@@ -19,6 +19,8 @@ export class CurrencyExchangerService extends CrudService<ICurrency, string> {
     super();
   }
 
+  // Note: i used two different APIS due to their limitations for free subscription
+
   getUrlByType(type: string) {
     return `${environment.APIUrl}${type}?access_key=${environment.currencyApiAccessKey}`;
   }
@@ -28,7 +30,7 @@ export class CurrencyExchangerService extends CrudService<ICurrency, string> {
   }
 
   getResourceUrl(): string {
-    return 'VacationRequests';
+    return '';
   }
 
   private fb = inject(FormBuilder);
@@ -71,8 +73,6 @@ export class CurrencyExchangerService extends CrudService<ICurrency, string> {
       .get<ICurrency1>(`${this.getUrlByType1('latest')}/${param}`)
       .pipe(
         tap((res) => {
-          console.log('res', res);
-
           this.currencyExchangerResponse.set(res);
           this.currencyRates.set(Object.entries(res.conversion_rates));
         })
@@ -90,8 +90,6 @@ export class CurrencyExchangerService extends CrudService<ICurrency, string> {
       )
       .pipe(
         tap((res) => {
-          console.log('res', res);
-
           res.success &&
             this.currencyHistoricalRates.set([
               ...this.currencyHistoricalRates(),
@@ -106,7 +104,6 @@ export class CurrencyExchangerService extends CrudService<ICurrency, string> {
       .get<ISymbol>(`${this.getUrlByType('symbols')}`, { params })
       .pipe(
         tap((res) => {
-          console.log('res', res);
           const currencyList = Object.keys(res.symbols);
           this.currencySymbols.set(currencyList);
           this.currencySymbolsWithName.set(res.symbols);

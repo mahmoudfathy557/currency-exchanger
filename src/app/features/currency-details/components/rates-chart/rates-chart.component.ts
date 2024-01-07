@@ -27,6 +27,7 @@ export class RatesChartComponent implements OnInit {
   currencyExchangerForm = this.currencyExchangerService.currencyExchangerForm;
   isShowChart = false;
 
+  // setting data prop of chart element
   data = computed(() => {
     return {
       labels: [
@@ -66,11 +67,13 @@ export class RatesChartComponent implements OnInit {
 
   options: any;
 
+  // setting monthlyRatesOfPastYear for "data" prop
   monthlyRatesOfPastYear = computed(() =>
     this.currencyExchangerService.currencyHistoricalRates()
   );
 
   ngOnInit() {
+    // getting base and target values when entering or refreshing the component
     this.activatedRoute.params.subscribe((params: Params) => {
       const { base, target } = params;
       if (base?.toLowerCase() !== 'eur') {
